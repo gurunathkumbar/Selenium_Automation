@@ -15,20 +15,6 @@ Page Object Model for maintainable test code
 
 Base classes & utilities for WebDriver management, reporting, and screenshots
 
-# 🧱 **Project Structure**
-
-src/main/java/
-├── driver/             # DriverManager (ThreadLocal WebDriver)
-├── listeners/          # TestNG listener for ExtentReports
-├── reports/            # HTML report output folder
-├── utils/
-│   ├── ScreenshotUtil.java
-│   └── ExtentManager.java, ExtentTestManager.java
-src/test/java/
-└── tests/
-    └── SampleTest.java
-screenshot/             # Automatically generated screenshot folder
-pom.xml                 # Maven dependencies and build setup
 
 # ⚙️ **Prerequisites**
 
@@ -47,9 +33,6 @@ git clone https://github.com/gurunathkumbar/Selenium_Automation.git
 cd Selenium_Automation
 Run tests
 
-bash
-Copy
-Edit
 mvn clean test
 View reports
 
@@ -60,11 +43,17 @@ Screenshots: Saved in /screenshot directory with embedded images in the report
 # 📝 **Usage Example (SampleTest.java)**
 
 @Test
+
 public void googleHomePageTest() {
+
     WebDriver driver = DriverManager.getDriver();
-    driver.get("https://www.google.com");
-    Assert.assertTrue(driver.getTitle().contains("Google"), "Title validation");
+    
+    driver.get("https://www.dummywebsite.com");
+    
+    Assert.assertTrue(driver.getTitle().contains("dummysiteTitle"), "Title validation");
+    
 }
+
 Failures automatically trigger screenshot capture and report embedding.
 
 # ⚒️ **How It Works**
