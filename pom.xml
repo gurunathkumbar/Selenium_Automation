@@ -12,6 +12,16 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <testng.version>7.10.2</testng.version>
+    <maven.compiler.version>3.11.0</maven.compiler.version>
+    <surefire.version>3.1.2</surefire.version>
+    <java.release.version>17</java.release.version>
+    <extentreports-version>5.1.2</extentreports-version>
+    <maven.source.encoding>UTF-8</maven.source.encoding>
+    <suite-xml>test-suites/testng.xml</suite-xml>
+    <selenium.version>4.10.0 </selenium.version>
+    <webdriver.version>6.1.0</webdriver.version>
+    <extentreports-version>5.1.2</extentreports-version>
   </properties>
 
   <dependencies>
@@ -21,5 +31,39 @@
       <version>3.8.1</version>
       <scope>test</scope>
     </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
+    <dependency>
+      <groupId>org.seleniumhq.selenium</groupId>
+      <artifactId>selenium-java</artifactId>
+      <version>${selenium.version}</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.testng/testng -->
+    <dependency>
+      <groupId>org.testng</groupId>
+      <artifactId>testng</artifactId>
+      <version>${testng.version}</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/io.github.bonigarcia/webdrivermanager -->
+    <dependency>
+      <groupId>io.github.bonigarcia</groupId>
+      <artifactId>webdrivermanager</artifactId>
+      <version>${webdriver.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.aventstack</groupId>
+      <artifactId>extentreports</artifactId>
+      <version>${extentreports-version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>ru.yandex.qatools.ashot</groupId>
+      <artifactId>ashot</artifactId>
+      <version>1.5.4</version>
+    </dependency>
+
   </dependencies>
 </project>

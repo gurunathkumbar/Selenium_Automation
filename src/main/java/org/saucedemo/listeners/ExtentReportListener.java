@@ -1,4 +1,14 @@
-package org.saucedemo.java.listeners;
+package org.saucedemo.listeners;
+
+import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.MediaEntityBuilder;
+import com.aventstack.extentreports.reporter.ExtentSparkReporter;
+import org.openqa.selenium.WebDriver;
+import org.saucedemo.core.SeleniumFactory;
+import org.testng.ITestContext;
+import org.testng.ITestListener;
+import org.testng.ITestResult;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -6,18 +16,14 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Objects;
 
-import org.testng.ITestContext;
-import org.testng.ITestListener;
-import org.testng.ITestResult;
+import static org.saucedemo.core.SeleniumFactory.takeScreenshot;
 
-import com.aventstack.extentreports.ExtentReports;
-import com.aventstack.extentreports.ExtentTest;
-import com.aventstack.extentreports.MediaEntityBuilder;
-import com.aventstack.extentreports.reporter.ExtentSparkReporter;
-import static org.saucedemo.java.core.PlaywrightFactory.takeScreenshot;
 
 public class ExtentReportListener implements ITestListener {
+
+    WebDriver driver = SeleniumFactory.getDriver();
 
     private static final String OUTPUT_FOLDER = "./build/";
     private static final String FILE_NAME = "TestExecutionReport.html";
@@ -94,20 +100,37 @@ public class ExtentReportListener implements ITestListener {
     public synchronized void onTestSuccess(ITestResult result) {
         System.out.println((result.getMethod().getMethodName() + " passed!"));
         test.get().pass("Test passed");
-        test.get().pass(result.getThrowable(), MediaEntityBuilder.createScreenCaptureFromBase64String(takeScreenshot(),result.getMethod().getMethodName()).build());
+        try {
+            test.get().pass(result.getThrowable(),
+                    MediaEntityBuilder.createScreenCaptureFromBase64String(
+                            Objects.requireNonNull(takeScreenshot(SeleniumFactory.getDriver())),result.getMethod().getMethodName()).build());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         test.get().getModel().setEndTime(getTime(result.getEndMillis()));
     }
 
     public synchronized void onTestFailure(ITestResult result) {
         System.out.println((result.getMethod().getMethodName() + " failed!"));
-        test.get().fail(result.getThrowable(), MediaEntityBuilder.createScreenCaptureFromBase64String(takeScreenshot(),result.getMethod().getMethodName()).build());
+        try {
+            test.get().fail(result.getThrowable(),
+                    MediaEntityBuilder.createScreenCaptureFromBase64String(
+                            Objects.requireNonNull(takeScreenshot(SeleniumFactory.getDriver())),result.getMethod().getMethodName()).build());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         test.get().getModel().setEndTime(getTime(result.getEndMillis()));
     }
 
     public synchronized void onTestSkipped(ITestResult result) {
         System.out.println((result.getMethod().getMethodName() + " skipped!"));
-        test.get().skip(result.getThrowable(), MediaEntityBuilder.createScreenCaptureFromBase64String(takeScreenshot(), result.getMethod().getMethodName()).build());
-        test.get().getModel().setEndTime(getTime(result.getEndMillis()));
+        try {
+            test.get().skip(result.getThrowable(),
+                    MediaEntityBuilder.createScreenCaptureFromBase64String(
+                            Objects.requireNonNull(takeScreenshot(SeleniumFactory.getDriver())),result.getMethod().getMethodName()).build());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }        test.get().getModel().setEndTime(getTime(result.getEndMillis()));
     }
 
     public synchronized void onTestFailedButWithinSuccessPercentage(ITestResult result) {

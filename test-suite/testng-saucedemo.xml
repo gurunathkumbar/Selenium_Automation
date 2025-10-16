@@ -5,14 +5,14 @@
 
     <listeners>
         <listener
-                class-name="org.saucedemo.java.listeners.ExtentReportListener" />
+              class-name="org.saucedemo.listeners.ExtentReportListener" />
 
     </listeners>
 
-    <test name="Web Automation Demo tests with Playwright">
-        <parameter name="browser" value="chromium" />
+    <test name="Web Automation Demo tests with Selenium">
+        <parameter name="browser" value="chrome" />
     <classes>
-        <class name="org.saucedemo.tests.LoginPageTests"/>
+        <class name="org.saudemo.test.LoginTest"/>
     </classes>
 </test>
 </suite> <!-- Suite -->
