@@ -92,7 +92,7 @@ public class SeleniumFactory {
             }
         }
         catch (Exception e) {
-            System.err.println("❌ Error initializing WebDriver: " + e.getMessage());
+            System.err.println("Error initializing WebDriver: " + e.getMessage());
             e.printStackTrace();
             throw new RuntimeException("Failed to initialize WebDriver", e);
         }
@@ -128,10 +128,17 @@ public class SeleniumFactory {
                     .shootingStrategy(ShootingStrategies.viewportPasting(500))  // increased delay
                     .takeScreenshot(driver);
 
-            // Save screenshot
-            String path = System.getProperty("user.dir") + "/screenshot/" + System.currentTimeMillis() + ".png";
-            File outputFile = new File(path);
+            // --- Ensure screenshot folder exists ---
+            File screenshotDir = new File(System.getProperty("user.dir") + "/screenshot");
+            if (!screenshotDir.exists()) {
+                screenshotDir.mkdirs();  // create directory including parents
+            }
+
+            // --- Save screenshot to file ---
+            String fileName = System.currentTimeMillis() + ".png";
+            File outputFile = new File(screenshotDir, fileName);
             ImageIO.write(screenshot.getImage(), "PNG", outputFile);
+            System.out.println("Screenshot saved: " + outputFile.getAbsolutePath());
 
             // Convert to Base64
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
