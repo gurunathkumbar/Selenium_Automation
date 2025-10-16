@@ -39,5 +39,5 @@ jobs:
       - name: Run Selenium Tests
         run: |
           mvn clean test \
-            -Dselenium.remote.url=http://localhost:4444/wd/hub \
-            -Dbrowser=chrome
+            -Dselenium.remote.url=http://localhost:4444/wd/hub
+            
