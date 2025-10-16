@@ -3,8 +3,14 @@ package org.saucedemo.core;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import java.io.*;
+import java.net.URL;
 import java.util.Base64;
 import java.util.Properties;
+
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.edge.EdgeOptions;
+import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import ru.yandex.qatools.ashot.AShot;
 import ru.yandex.qatools.ashot.Screenshot;
 import ru.yandex.qatools.ashot.shooting.ShootingStrategies;
@@ -27,33 +33,74 @@ public class SeleniumFactory {
 
 
     public WebDriver initBrowser(Properties prop){
-    String browserName = prop.getProperty("browser").trim();
-    System.out.println("Browser name is : " + browserName);
+        String remoteUrl = System.getProperty("selenium.remote.url", "").trim();
+        String browserName = prop.getProperty("browser").trim();
+        System.out.println("Browser name is : " + browserName);
 
-    switch (browserName.toLowerCase()) {
-        case "firefox":
-            driver.set(WebDriverManager.firefoxdriver().create());
-            break;
-        case "safari":
-            driver.set(WebDriverManager.safaridriver().create());
-            break;
-        case "chrome":
-            driver.set(WebDriverManager.chromedriver().create());
-            break;
-        case "edge":
-            driver.set(WebDriverManager.edgedriver().create());
-            break;
-        case "chromium":
-            driver.set(WebDriverManager.chromiumdriver().create());
-            break;
-        default:
-            System.out.println("please pass the right browser name...... Currently, it's running in headless mode by default");
-            //TODO: change to headless mode
-            driver.set(WebDriverManager.chromedriver().create());
-            break;
-    }
+        try {
+            // --- Remote execution case (e.g., GitHub Actions) ---
+            if (!remoteUrl.isEmpty()) {
+                System.out.println("🔗 Running tests on remote Selenium Grid: " + remoteUrl);
+                switch (browserName.toLowerCase()) {
+                    case "firefox":
+                        FirefoxOptions firefoxOptions = new FirefoxOptions();
+                        driver.set(new RemoteWebDriver(new URL(remoteUrl), firefoxOptions));
+                        break;
 
-       return getDriver();
+                    case "edge":
+                        EdgeOptions edgeOptions = new EdgeOptions();
+                        driver.set(new RemoteWebDriver(new URL(remoteUrl), edgeOptions));
+                        break;
+
+                    case "chrome":
+                    default:
+                        ChromeOptions chromeOptions = new ChromeOptions();
+                        chromeOptions.addArguments("--headless=new");
+                        chromeOptions.addArguments("--no-sandbox");
+                        chromeOptions.addArguments("--disable-dev-shm-usage");
+                        driver.set(new RemoteWebDriver(new URL(remoteUrl), chromeOptions));
+                        break;
+                }
+            }
+            // --- Local execution case ---
+
+             else {
+                System.out.println("💻 Running tests locally...");
+
+                switch (browserName.toLowerCase()) {
+                    case "firefox":
+                        driver.set(WebDriverManager.firefoxdriver().create());
+                        break;
+                    case "safari":
+                        driver.set(WebDriverManager.safaridriver().create());
+                        break;
+                    case "chrome":
+                        driver.set(WebDriverManager.chromedriver().create());
+                        break;
+                    case "edge":
+                        driver.set(WebDriverManager.edgedriver().create());
+                        break;
+                    case "chromium":
+                        driver.set(WebDriverManager.chromiumdriver().create());
+                        break;
+                    default:
+                        System.out.println("please pass the right browser name...... Currently, it's running in headless mode by default");
+                        //TODO: change to headless mode
+                        driver.set(WebDriverManager.chromedriver().create());
+                        break;
+                }
+            }
+        }
+        catch (Exception e) {
+            System.err.println("❌ Error initializing WebDriver: " + e.getMessage());
+            e.printStackTrace();
+            throw new RuntimeException("Failed to initialize WebDriver", e);
+        }
+
+
+
+
+        return getDriver();
 
 
 }
