@@ -26,8 +26,8 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: screenshots
-          path: screenshots/
+          name: screenshot
+          path: screenshot/
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
