@@ -98,10 +98,7 @@ public class SeleniumFactory {
         }
 
 
-
-
         return getDriver();
-
 
 }
 

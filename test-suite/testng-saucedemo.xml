@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="Saucedemo ecommerce playground website test suite" thread-count="5"
-       parallel="tests" verbose="4">
+<suite name="Saucedemo ecommerce playground website test suite" thread-count="4"
+       parallel="classes" verbose="5">
 
     <listeners>
         <listener
