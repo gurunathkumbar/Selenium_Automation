@@ -33,6 +33,7 @@ public class Base {
         driver.navigate().to(prop.getProperty("url"));
         driver.manage().window().maximize();
         loginPage = new LoginPage(driver);
+
     }
 
     @AfterTest
