@@ -9,9 +9,10 @@ public class LoginTest extends Base {
 
     @Test(priority = 1)
     public void loginPageNavigationTest() {
-        loginPage.doLogin(prop.getProperty("username").trim(),prop.getProperty("password").trim());
+        boolean isLoggedIn = loginPage.doLogin(prop.getProperty("username").trim(), prop.getProperty("password").trim());
         String actLoginPageTitle = loginPage.getLoginPageTitle();
         System.out.println("page act title: " + actLoginPageTitle);
         Assert.assertEquals(actLoginPageTitle, Constants.LOGIN_PAGE_TITLE);
+        Assert.assertTrue(isLoggedIn , " Log In to application is failed");
     }
 }

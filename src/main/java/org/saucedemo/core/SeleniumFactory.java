@@ -128,11 +128,17 @@ public class SeleniumFactory {
                     .shootingStrategy(ShootingStrategies.viewportPasting(500))  // increased delay
                     .takeScreenshot(driver);
 
+
+
             // --- Ensure screenshot folder exists ---
             File screenshotDir = new File(System.getProperty("user.dir") + "/screenshot");
-            if (!screenshotDir.exists()) {
-                screenshotDir.mkdirs();  // create directory including parents
+            // --- Delete existing folder if it exists ---
+            if (screenshotDir.exists()) {
+                deleteFolderRecursively(screenshotDir);
             }
+
+            // --- Create fresh folder ---
+            screenshotDir.mkdirs();
 
             // --- Save screenshot to file ---
             String fileName = System.currentTimeMillis() + ".png";
@@ -150,6 +156,20 @@ public class SeleniumFactory {
             e.printStackTrace();
             return null;
         }
+    }
+
+
+    /**
+     * Utility method to delete a folder recursively
+     */
+    private static void deleteFolderRecursively(File folder) {
+        File[] allContents = folder.listFiles();
+        if (allContents != null) {
+            for (File file : allContents) {
+                deleteFolderRecursively(file);
+            }
+        }
+        folder.delete();
     }
 
 }

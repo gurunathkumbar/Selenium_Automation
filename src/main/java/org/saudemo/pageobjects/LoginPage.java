@@ -7,6 +7,9 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 
+
+
+
 public class LoginPage {
 
     private WebDriver driver;
@@ -17,12 +20,14 @@ public class LoginPage {
     private WebElement pwdTxt ;
     @FindBy(xpath="//input[@id='login-button']")
     private WebElement loginBtn ;
-    @FindBy(xpath="//div[@id='menu_button_container']")
-    private WebElement menuBtn ;
+    @FindBy(xpath="//div[@class='bm-burger-button']/button")
+    private WebElement openMenuBtn ;
     @FindBy(xpath="//a[@id='logout_sidebar_link']")
     private WebElement logoutLink ;
 
-   public LoginPage(WebDriver driver){
+
+
+    public LoginPage(WebDriver driver){
         this.driver = driver;
         PageFactory.initElements(driver,this);
     }
@@ -35,7 +40,8 @@ public class LoginPage {
                 userNameTxt.sendKeys(appUserName);
                 pwdTxt.sendKeys(appPassword);
                 loginBtn.click();
-                if(logoutLink.isDisplayed()){
+                openMenuBtn.click();
+                if(openMenuBtn.isDisplayed()){
                     System.out.println("user is logged in successfully....");
                     return true;
                 }else {
